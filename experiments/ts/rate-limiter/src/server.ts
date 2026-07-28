@@ -92,8 +92,8 @@ const server = app.listen(PORT, () => {
   console.log(`  GET  /health         - health check`);
   console.log("");
   console.log("Try:");
-  console.log(`  npm run burst        - send 50 requests in ~1 second`);
-  console.log(`  npm run sustained    - send 2 req/sec for 30 seconds`);
+  console.log(`  npm run rate-limiter:burst      - send 50 requests in ~1 second`);
+  console.log(`  npm run rate-limiter:sustained   - send 3 req/sec for 30 seconds`);
 });
 
 broadcaster.attach(server);

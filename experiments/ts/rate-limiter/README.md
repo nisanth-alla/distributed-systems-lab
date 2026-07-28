@@ -40,22 +40,24 @@ This is good when you want strict enforcement. No burst tolerance, just a hard c
 
 ## How to run
 
+All TypeScript experiments share one `package.json` at `experiments/ts/`. Install once from there:
+
 ```bash
-# Install dependencies
+cd experiments/ts
 npm install
 
 # Start the server
-npm run dev
+npm run rate-limiter:dev
 ```
 
 The server starts on port 8002 with token bucket as the default strategy.
 
 ### Send a burst of traffic
 
-In a second terminal:
+In a second terminal (from `experiments/ts/`):
 
 ```bash
-npm run burst
+npm run rate-limiter:burst
 ```
 
 This fires 50 requests simultaneously. Watch the output: you'll see the first ~10 accepted and the rest rejected. The exact number depends on timing.
@@ -63,7 +65,7 @@ This fires 50 requests simultaneously. Watch the output: you'll see the first ~1
 ### Send sustained traffic
 
 ```bash
-npm run sustained
+npm run rate-limiter:sustained
 ```
 
 This sends 3 requests per second for 30 seconds. You'll see a per-second breakdown showing when rejections start and the pattern they follow. With the default token bucket settings (refill 2/sec, sending 3/sec), the bucket drains by 1 per second. You'll see rejections starting around second 4-5.

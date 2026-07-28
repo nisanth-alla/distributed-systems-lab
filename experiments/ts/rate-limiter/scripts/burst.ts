@@ -11,11 +11,11 @@
  *   But the "rest" depends on where you are in the window cycle.
  *
  * Run this against each strategy and compare:
- *   1. Start the server:         npm run dev
- *   2. Send burst:               npm run burst
+ *   1. Start the server:         npm run rate-limiter:dev
+ *   2. Send burst:               npm run rate-limiter:burst
  *   3. Switch strategy:          curl -X POST http://localhost:8002/strategy -H 'Content-Type: application/json' -d '{"strategy":"sliding-window"}'
  *   4. Reset:                    curl -X POST http://localhost:8002/reset
- *   5. Send burst again:         npm run burst
+ *   5. Send burst again:         npm run rate-limiter:burst
  */
 
 const BASE = "http://localhost:8002";
