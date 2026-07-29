@@ -18,12 +18,12 @@ Protect an API from abuse without blocking legitimate users.
 
 Model an e-commerce order that flows through payment, inventory, shipping, and notification stages via an event bus.
 
-- [ ] Event bus with pub/sub
-- [ ] Order saga with compensation logic
-- [ ] Deliberate failure injection (shipping fails after payment succeeds)
-- [ ] Compensation handler (refund on downstream failure)
+- [x] Event bus with pub/sub
+- [x] Order saga with compensation logic
+- [x] Deliberate failure injection (shipping fails after payment succeeds)
+- [x] Compensation handler (refund on downstream failure)
 - [ ] Dead letter queue for unprocessable events
-- [ ] Design decisions: choreography vs orchestration
+- [x] Design decisions: choreography vs orchestration
 
 ## Phase 3: Concurrent File Processor (Go)
 

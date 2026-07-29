@@ -1,0 +1,28 @@
+{
+  "name": "distributed-systems-experiments",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Runnable TypeScript experiments for the distributed systems lab",
+  "scripts": {
+    "rate-limiter:dev": "ts-node rate-limiter/src/server.ts",
+    "rate-limiter:burst": "ts-node rate-limiter/scripts/burst.ts",
+    "rate-limiter:sustained": "ts-node rate-limiter/scripts/sustained.ts",
+    "order-pipeline:dev": "ts-node order-pipeline/src/server.ts",
+    "order-pipeline:happy": "ts-node order-pipeline/scripts/happy-path.ts",
+    "order-pipeline:fail:shipping": "ts-node order-pipeline/scripts/shipping-failure.ts",
+    "order-pipeline:concurrent": "ts-node order-pipeline/scripts/concurrent-orders.ts"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.21.0",
+    "ws": "^8.18.0"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.17",
+    "@types/express": "^4.17.21",
+    "@types/node": "^20.14.2",
+    "@types/ws": "^8.5.12",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.5.0"
+  }
+}

@@ -28,7 +28,7 @@ Each one has its own README, runnable code, and a design decisions doc that expl
 | Experiment | Language | Problem | Status |
 |---|---|---|---|
 | [Rate Limiter](experiments/ts/rate-limiter/) | TypeScript | Protecting an API from burst and sustained overload | Active |
-| Event-Driven Order Pipeline | TypeScript | Order processing with saga pattern and failure compensation | Planned |
+| [Order Pipeline](experiments/ts/order-pipeline/) | TypeScript | Order processing with saga pattern and failure compensation | Active |
 | Concurrent File Processor | Go | Processing thousands of files in parallel with backpressure | Planned |
 | Health Check & Service Registry | Go | How services find each other and detect failures | Planned |
 
@@ -45,7 +45,7 @@ Experiments here test ideas in practice. Notes document the concepts. The job pl
 
 - [x] Repo structure and documentation
 - [x] Rate limiter experiment (TypeScript)
-- [ ] Event-driven order pipeline (TypeScript)
+- [x] Event-driven order pipeline (TypeScript)
 - [ ] Concurrent file processor (Go)
 - [ ] Service registry and health checks (Go)
 - [ ] Interactive learning site with animated visualizations
@@ -60,9 +60,10 @@ distributed-systems-lab/
 │   ├── philosophy.md         # Why this lab exists
 │   └── roadmap.md            # Phased plan with milestones
 ├── experiments/
-│   ├── ts/                   # TypeScript experiments
-│   │   └── rate-limiter/     # API rate limiting (two strategies)
-│   └── go/                   # Go experiments (coming)
+│   ├── ts/                   # TypeScript experiments (shared package.json)
+│   │   ├── rate-limiter/     # API rate limiting (two strategies)
+│   │   └── order-pipeline/   # Saga pattern with failure compensation
+│   └── go/                   # Go experiments (shared go.mod, coming)
 ├── site/                     # Interactive learning site (coming)
 ├── CONTRIBUTING.md           # How experiments are structured
 └── README.md
@@ -70,16 +71,18 @@ distributed-systems-lab/
 
 ## Running an experiment
 
-Each experiment is self-contained. Go to its directory, install, and follow the README:
+All TypeScript experiments share one `package.json`. Install once, then run any experiment:
 
 ```bash
-cd experiments/ts/rate-limiter
+cd experiments/ts
 npm install
-npm run dev
 
-# In another terminal:
-npm run burst      # 100 requests in 1 second
-npm run sustained  # Steady 10 req/sec for 30 seconds
+npm run rate-limiter:dev        # start the rate limiter server
+npm run rate-limiter:burst      # send burst traffic
+
+npm run order-pipeline:dev      # start the order pipeline server
+npm run order-pipeline:happy    # run a successful order
+npm run order-pipeline:fail:shipping  # trigger compensation chain
 ```
 
 Every experiment README tells you what to expect and what edge cases are worth trying.
