@@ -11,11 +11,11 @@ import (
 //
 // The architecture uses three channels:
 //
-//   tasks channel                    results channel
-//   ┌──────────┐    ┌─────────┐    ┌──────────┐
-//   │ producer │───>│ workers │───>│ collector│
-//   └──────────┘    └─────────┘    └──────────┘
-//                    (N goroutines)
+//	tasks channel                    results channel
+//	┌──────────┐    ┌─────────┐    ┌──────────┐
+//	│ producer │───>│ workers │───>│ collector│
+//	└──────────┘    └─────────┘    └──────────┘
+//	                 (N goroutines)
 //
 // 1. The producer sends tasks into the tasks channel.
 // 2. N worker goroutines read from the tasks channel and process them.
@@ -33,10 +33,10 @@ import (
 // - sync.WaitGroup: a counter that blocks until N goroutines finish
 // - context.Context: for cancellation and graceful shutdown
 type Pool struct {
-	workerCount    int
-	bufferSize     int
-	tasks          chan Task
-	results        chan Result
+	workerCount      int
+	bufferSize       int
+	tasks            chan Task
+	results          chan Result
 	collectedResults []Result
 
 	// mu protects collectedResults from concurrent writes.
