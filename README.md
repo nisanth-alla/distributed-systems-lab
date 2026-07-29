@@ -29,7 +29,7 @@ Each one has its own README, runnable code, and a design decisions doc that expl
 |---|---|---|---|
 | [Rate Limiter](experiments/ts/rate-limiter/) | TypeScript | Protecting an API from burst and sustained overload | Active |
 | [Order Pipeline](experiments/ts/order-pipeline/) | TypeScript | Order processing with saga pattern and failure compensation | Active |
-| Concurrent File Processor | Go | Processing thousands of files in parallel with backpressure | Planned |
+| [File Processor](experiments/go/worker-pool/) | Go | Processing thousands of files in parallel with backpressure | Active |
 | Health Check & Service Registry | Go | How services find each other and detect failures | Planned |
 
 ## Connected projects
@@ -46,7 +46,7 @@ Experiments here test ideas in practice. Notes document the concepts. The job pl
 - [x] Repo structure and documentation
 - [x] Rate limiter experiment (TypeScript)
 - [x] Event-driven order pipeline (TypeScript)
-- [ ] Concurrent file processor (Go)
+- [x] Concurrent file processor (Go)
 - [ ] Service registry and health checks (Go)
 - [ ] Interactive learning site with animated visualizations
 
@@ -83,6 +83,15 @@ npm run rate-limiter:burst      # send burst traffic
 npm run order-pipeline:dev      # start the order pipeline server
 npm run order-pipeline:happy    # run a successful order
 npm run order-pipeline:fail:shipping  # trigger compensation chain
+```
+
+Go experiments don't need npm. Run them directly:
+
+```bash
+cd experiments/go
+go run ./cmd/worker-pool                        # default: 4 workers, 100 tasks
+go run ./cmd/worker-pool -workers 1 -tasks 50   # sequential baseline
+go run ./cmd/worker-pool -workers 8 -tasks 50   # concurrent
 ```
 
 Every experiment README tells you what to expect and what edge cases are worth trying.

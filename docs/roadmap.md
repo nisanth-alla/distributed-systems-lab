@@ -29,12 +29,12 @@ Model an e-commerce order that flows through payment, inventory, shipping, and n
 
 Process thousands of files in parallel using goroutines and channels.
 
-- [ ] Worker pool with configurable concurrency
-- [ ] Fan-out / fan-in pattern
-- [ ] Backpressure via bounded channels
-- [ ] Graceful shutdown on SIGINT
-- [ ] Progress reporting
-- [ ] Design decisions: why Go's concurrency model fits this problem
+- [x] Worker pool with configurable concurrency
+- [x] Fan-out / fan-in pattern
+- [x] Backpressure via bounded channels
+- [x] Graceful shutdown on SIGINT
+- [x] Progress reporting
+- [x] Design decisions: why Go's concurrency model fits this problem
 
 ## Phase 4: Health Check & Service Registry (Go)
 
