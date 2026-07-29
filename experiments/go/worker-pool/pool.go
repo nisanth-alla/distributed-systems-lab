@@ -116,19 +116,21 @@ func (p *Pool) Run(ctx context.Context, taskList []Task, onResult func(Result)) 
 	// If the buffer is full, this blocks until a worker picks one up.
 	// That's backpressure in action.
 	tasksSent := 0
+	cancelled := false
 	for _, task := range taskList {
 		// Check if the context was cancelled (e.g., Ctrl+C)
 		select {
 		case <-ctx.Done():
 			fmt.Printf("\n[pool] cancelled after sending %d/%d tasks\n", tasksSent, len(taskList))
-			// Jump to cleanup. Don't send remaining tasks.
-			goto cleanup
+			cancelled = true
 		case p.tasks <- task:
 			tasksSent++
 		}
+		if cancelled {
+			break
+		}
 	}
 
-cleanup:
 	// Close the tasks channel. This signals to workers that no more
 	// tasks are coming. Their for-range loops will exit after processing
 	// whatever is left in the buffer.

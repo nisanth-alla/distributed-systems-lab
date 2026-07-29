@@ -38,6 +38,7 @@ This lab is part of a bigger picture:
 
 - **[Reliable Job Platform](https://github.com/nisanth-alla/reliable-job-platform)** — the full-scale project that grew out of these experiments. Production-style job processing with queuing, retries, idempotency, and monitoring. Design decisions here fed directly into that system.
 - **[System Design Notes](https://github.com/nisanth-alla/system-design-notes)** — the theory side. Structured notes on caching, queues, consistency, retries, and more, with runnable demos and interactive visualizations. Where this lab is "build and break," the notes are "explain and organize."
+- **[Engineering Journal](https://nisanth-alla.github.io/engineering-journal/)** — deeper write-ups on the Go learning process and experiment walkthroughs. Goes beyond the README with context on why each design decision was made.
 
 Experiments here test ideas in practice. Notes document the concepts. The job platform applies them at project scale.
 
@@ -63,8 +64,9 @@ distributed-systems-lab/
 │   ├── ts/                   # TypeScript experiments (shared package.json)
 │   │   ├── rate-limiter/     # API rate limiting (two strategies)
 │   │   └── order-pipeline/   # Saga pattern with failure compensation
-│   └── go/                   # Go experiments (shared go.mod, coming)
-├── site/                     # Interactive learning site (coming)
+│   └── go/                   # Go experiments (shared go.mod)
+│       ├── cmd/worker-pool/  # Entry point for the file processor
+│       └── worker-pool/      # Concurrent file processing library
 ├── CONTRIBUTING.md           # How experiments are structured
 └── README.md
 ```

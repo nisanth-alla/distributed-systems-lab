@@ -107,17 +107,27 @@ If you're new to Go, here's where each concept shows up:
 
 | Concept | Where to look | What it does |
 |---|---|---|
-| Goroutines | `pool.go:89` | `go p.worker(...)` launches a worker |
-| Channels | `pool.go:62-63` | `tasks` and `results` channels connect producer/workers/collector |
-| Buffered channels | `pool.go:62` | `make(chan Task, bufferSize)` creates a channel with a buffer |
-| for-range on channel | `pool.go:140` | `for task := range p.tasks` reads until channel is closed |
-| close(channel) | `pool.go:119` | Signals "no more data" to receivers |
-| sync.WaitGroup | `pool.go:82-87` | Tracks when all workers are done |
-| sync.Mutex | `pool.go:47`, `reporter.go:28` | Protects shared state from concurrent access |
-| context.Context | `pool.go:76`, `main.go:67` | Propagates cancellation for graceful shutdown |
-| defer | `pool.go:133` | `defer wg.Done()` runs when the function returns |
-| Struct methods | `task.go:62` | `func (t Task) ProcessTask(...)` is a method on Task |
-| Pointers | `pool.go:57` | `*Pool` means "pointer to Pool" |
-| Slices | `generator.go:23` | `make([]Task, 0, count)` creates a dynamic array |
+| Goroutines | `pool.go:96` | `go p.worker(...)` launches a worker |
+| Channels | `pool.go:68-69` | `tasks` and `results` channels connect producer/workers/collector |
+| Buffered channels | `pool.go:68` | `make(chan Task, bufferSize)` creates a channel with a buffer |
+| for-range on channel | `pool.go:167` | `for task := range p.tasks` reads until channel is closed |
+| close(channel) | `pool.go:135` | Signals "no more data" to receivers |
+| sync.WaitGroup | `pool.go:85-91` | Tracks when all workers are done |
+| sync.Mutex | `pool.go:46`, `reporter.go:18` | Protects shared state from concurrent access |
+| context.Context | `pool.go:79`, `main.go:69` | Propagates cancellation for graceful shutdown |
+| defer | `pool.go:165` | `defer wg.Done()` runs when the function returns |
+| Struct methods | `task.go:64` | `func (t Task) ProcessTask(...)` is a method on Task |
+| Pointers | `pool.go:59` | `*Pool` means "pointer to Pool" |
+| Slices | `generator.go:21` | `make([]Task, 0, count)` creates a dynamic array |
+
+## Lessons learned
+
+1. The speedup from adding workers isn't linear forever. Going from 1 to 4 gives close to 4x improvement. Going from 8 to 16 gives almost nothing because the simulated work is short enough that coordination overhead starts to matter. In a real system, the bottleneck would shift from CPU to disk I/O or network well before you hit 16 workers.
+
+2. Channel buffer size is a tuning parameter, not a set-and-forget value. Buffer too small and the producer spends time blocked. Buffer too large and you're queuing work in memory that might never get processed if the program shuts down. For this experiment, 10 was a good default, but the right number depends on your task size and processing time.
+
+3. `context.Context` for cancellation felt like overhead at first but proved its value immediately. Without it, Ctrl+C would kill goroutines mid-work. With it, workers finish their current task and exit cleanly. The two lines of code to wire it up (`context.WithCancel` + `signal.Notify`) save you from data corruption in any real system.
+
+4. The `for task := range channel` pattern is one of those things that makes Go click. The channel closes, the loop exits, the goroutine ends. No polling, no "are we done yet?" checks, no cleanup. The control flow is implicit in the channel lifecycle.
 
 See [docs/design-decisions.md](docs/design-decisions.md) for the reasoning behind the architecture.
