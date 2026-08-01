@@ -109,7 +109,7 @@ curl -X POST http://localhost:8003/reset
 
 2. **Payment failure has no compensation.** When the first stage fails, there's nothing to undo. The order just fails immediately. Compare the event count between a payment failure and a shipping failure.
 
-3. **Concurrent order interleaving.** Run `npm run concurrent` and watch the server console. Events from different orders mix together. Each order's saga runs independently, but the console shows the real-world messiness of parallel processing.
+3. **Concurrent order interleaving.** Run `npm run order-pipeline:concurrent` and watch the server console. Events from different orders mix together. Each order's saga runs independently, but the console shows the real-world messiness of parallel processing.
 
 4. **The event log as a source of truth.** Hit `/orders/<id>/events` after a failure. The event sequence tells you exactly what happened and in what order. In event-sourced systems, this log is how you reconstruct state.
 

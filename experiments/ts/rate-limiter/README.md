@@ -82,7 +82,7 @@ curl -X POST http://localhost:8002/strategy \
 curl -X POST http://localhost:8002/reset
 
 # Run the same load test again
-npm run burst
+npm run rate-limiter:burst
 ```
 
 Compare the output. The total accepted/rejected might be similar, but the *pattern* of rejections is different.

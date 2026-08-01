@@ -4,15 +4,35 @@ How experiments are structured in this repo. If you want to add one, follow this
 
 ## Experiment directory layout
 
+TypeScript experiments share a single `package.json` and `tsconfig.json` at `experiments/ts/`. Go experiments share a single `go.mod` at `experiments/go/`. Individual experiments contain only source code, scripts, and docs:
+
 ```
-experiments/{lang}/{experiment-name}/
-├── README.md                  # The full write-up (see template below)
-├── package.json               # (TypeScript) or go.mod (Go)
-├── tsconfig.json              # (TypeScript only)
-├── src/                       # Implementation
-├── scripts/                   # Load tests, demo scripts
-└── docs/
-    └── design-decisions.md    # Why you made the choices you made
+experiments/ts/
+├── package.json               # shared deps for all TS experiments
+├── tsconfig.json              # shared config
+├── rate-limiter/
+│   ├── README.md
+│   ├── src/
+│   ├── scripts/
+│   └── docs/
+│       └── design-decisions.md
+└── order-pipeline/
+    ├── README.md
+    ├── src/
+    ├── scripts/
+    └── docs/
+        └── design-decisions.md
+
+experiments/go/
+├── go.mod                     # shared module for all Go experiments
+├── cmd/
+│   └── worker-pool/
+│       └── main.go            # entry point (package main)
+└── worker-pool/
+    ├── README.md
+    ├── *.go                   # library code (package workerpool)
+    └── docs/
+        └── design-decisions.md
 ```
 
 ## README template
@@ -55,7 +75,7 @@ This is separate from the README because the README is about the experiment. The
 - Strict mode, no `any`
 - Express for HTTP when needed
 - `ws` for WebSocket broadcasting (for future visualizations)
-- `tsx` for dev, no build step needed
+- `ts-node` for running directly, no build step needed
 
 **Go experiments:**
 - Standard library first. External dependencies only when the standard library genuinely doesn't cover it.

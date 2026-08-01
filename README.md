@@ -29,7 +29,7 @@ Each one has its own README, runnable code, and a design decisions doc that expl
 |---|---|---|---|
 | [Rate Limiter](experiments/ts/rate-limiter/) | TypeScript | Protecting an API from burst and sustained overload | Active |
 | [Order Pipeline](experiments/ts/order-pipeline/) | TypeScript | Order processing with saga pattern and failure compensation | Active |
-| Concurrent File Processor | Go | Processing thousands of files in parallel with backpressure | Planned |
+| [File Processor](experiments/go/worker-pool/) | Go | Processing thousands of files in parallel with backpressure | Active |
 | Health Check & Service Registry | Go | How services find each other and detect failures | Planned |
 
 ## Connected projects
@@ -38,6 +38,7 @@ This lab is part of a bigger picture:
 
 - **[Reliable Job Platform](https://github.com/nisanth-alla/reliable-job-platform)** — the full-scale project that grew out of these experiments. Production-style job processing with queuing, retries, idempotency, and monitoring. Design decisions here fed directly into that system.
 - **[System Design Notes](https://github.com/nisanth-alla/system-design-notes)** — the theory side. Structured notes on caching, queues, consistency, retries, and more, with runnable demos and interactive visualizations. Where this lab is "build and break," the notes are "explain and organize."
+- **[Engineering Journal](https://nisanth-alla.github.io/engineering-journal/)** — deeper write-ups on the Go learning process and experiment walkthroughs. Goes beyond the README with context on why each design decision was made.
 
 Experiments here test ideas in practice. Notes document the concepts. The job platform applies them at project scale.
 
@@ -46,7 +47,7 @@ Experiments here test ideas in practice. Notes document the concepts. The job pl
 - [x] Repo structure and documentation
 - [x] Rate limiter experiment (TypeScript)
 - [x] Event-driven order pipeline (TypeScript)
-- [ ] Concurrent file processor (Go)
+- [x] Concurrent file processor (Go)
 - [ ] Service registry and health checks (Go)
 - [ ] Interactive learning site with animated visualizations
 
@@ -63,8 +64,9 @@ distributed-systems-lab/
 │   ├── ts/                   # TypeScript experiments (shared package.json)
 │   │   ├── rate-limiter/     # API rate limiting (two strategies)
 │   │   └── order-pipeline/   # Saga pattern with failure compensation
-│   └── go/                   # Go experiments (shared go.mod, coming)
-├── site/                     # Interactive learning site (coming)
+│   └── go/                   # Go experiments (shared go.mod)
+│       ├── cmd/worker-pool/  # Entry point for the file processor
+│       └── worker-pool/      # Concurrent file processing library
 ├── CONTRIBUTING.md           # How experiments are structured
 └── README.md
 ```
@@ -83,6 +85,15 @@ npm run rate-limiter:burst      # send burst traffic
 npm run order-pipeline:dev      # start the order pipeline server
 npm run order-pipeline:happy    # run a successful order
 npm run order-pipeline:fail:shipping  # trigger compensation chain
+```
+
+Go experiments don't need npm. Run them directly:
+
+```bash
+cd experiments/go
+go run ./cmd/worker-pool                        # default: 4 workers, 100 tasks
+go run ./cmd/worker-pool -workers 1 -tasks 50   # sequential baseline
+go run ./cmd/worker-pool -workers 8 -tasks 50   # concurrent
 ```
 
 Every experiment README tells you what to expect and what edge cases are worth trying.

@@ -47,7 +47,7 @@ Both implementations store state in process memory. This is fine for a single se
 
 The production fix is Redis. Store the token count or window counters in Redis with atomic operations (INCR, EXPIRE, Lua scripts for token bucket). Redis is fast enough that the latency overhead is acceptable for rate limiting checks.
 
-I didn't add Redis here because the experiment is about the algorithms, not the storage layer. The design-decisions doc in the order pipeline experiment (Phase 2) will cover shared state patterns.
+I didn't add Redis here because the experiment is about the algorithms, not the storage layer.
 
 ## The numbers I picked
 
